@@ -10,9 +10,11 @@ interface NavbarProps {
 
 export default function Navbar({ user }: NavbarProps) {
   const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // State to toggle menu visibility
 
   const handleSignOut = async () => {
     await supabase.auth.signOut();
+    closeModal(); // Close the modal after signing out
   };
 
   const handleSignIn = () => {
@@ -23,15 +25,57 @@ export default function Navbar({ user }: NavbarProps) {
     setIsModalOpen(false); // Close the modal
   };
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen); // Toggle the menu visibility on mobile
+  };
+
   return (
     <nav className="bg-black shadow-lg fixed top-0 left-0 w-full z-50">
       <div className="max-w-7xl mx-auto px-4">
-        <div className="flex justify-between h-16">
+        <div className="flex justify-between items-center h-16">
           <div className="flex items-center">
             <FaGraduationCap className="w-8 h-8 text-purple-600" /> {/* Using react-icons */}
             <span className="ml-2 text-xl font-bold text-white">Learning Hub</span>
           </div>
           <div className="flex items-center space-x-4">
+            {/* Mobile Hamburger Icon */}
+            <button
+              className="lg:hidden text-white"
+              onClick={toggleMenu}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+              </svg>
+            </button>
+
+            {/* Desktop Navigation */}
+            <div className="hidden lg:flex items-center space-x-4">
+              {user ? (
+                <>
+                  <span className="text-white">Welcome, {user.email}</span>
+                  <button
+                    onClick={handleSignOut}
+                    className="flex items-center text-white hover:text-purple-700"
+                  >
+                    <LogOut className="w-4 h-4 mr-1" />
+                    Sign Out
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={handleSignIn}
+                  className="flex items-center text-white hover:text-purple-700"
+                >
+                  <LogIn className="w-4 h-4 mr-2" /> Sign In
+                </button>
+              )}
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        <div className={`lg:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
+          <div className="flex flex-col items-center space-y-4 py-4">
             {user ? (
               <>
                 <span className="text-white">Welcome, {user.email}</span>
