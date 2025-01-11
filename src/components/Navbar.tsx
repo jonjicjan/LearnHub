@@ -6,15 +6,24 @@ import AuthForm from './AuthForm';
 
 interface NavbarProps {
   user: any;
+  setUser: React.Dispatch<React.SetStateAction<any>>; // Add this prop to update user state in the parent component
 }
 
-export default function Navbar({ user }: NavbarProps) {
+export default function Navbar({ user, setUser }: NavbarProps) {
   const [isModalOpen, setIsModalOpen] = useState(false); // State to control modal visibility
   const [isMenuOpen, setIsMenuOpen] = useState(false); // State to toggle menu visibility
 
   const handleSignOut = async () => {
-    await supabase.auth.signOut();
-    closeModal(); // Close the modal after signing out
+    try {
+      // Sign out using Supabase
+      await supabase.auth.signOut();
+
+      // After successful sign-out, update the user state and close modal if open
+      setUser(null);  // Update the user state to null
+      setIsModalOpen(false);  // Close the modal after signing out if it's open
+    } catch (error) {
+      console.error("Error signing out: ", error);
+    }
   };
 
   const handleSignIn = () => {
@@ -76,6 +85,14 @@ export default function Navbar({ user }: NavbarProps) {
         {/* Mobile Menu */}
         <div className={`lg:hidden ${isMenuOpen ? 'block' : 'hidden'}`}>
           <div className="flex flex-col items-center space-y-4 py-4">
+            {/* Close button for mobile menu */}
+            <button
+              onClick={toggleMenu}
+              className="text-white text-lg font-semibold mb-4"
+            >
+              Close Menu &#8595;
+            </button>
+
             {user ? (
               <>
                 <span className="text-white">Welcome, {user.email}</span>
