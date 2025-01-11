@@ -78,7 +78,7 @@ function App() {
         {!user ? (
           <div className="flex flex-col items-center justify-center min-h-screen">
             <section className="py-12 bg-white text-center" id="courses">
-              <h2 className="text-3xl font-bold text-purple-900 mb-6">Welcome to Learning Hub! AI-Powered Learning, Crafted for Your Success. </h2>
+              <h2 className="text-3xl font-bold text-purple-700 mb-6">Welcome to Learning Hub! AI-Powered Learning, Crafted for Your Success. </h2>
               <p className="text-lg text-gray-600 mb-8">
                 Check out some of our most popular courses available now.
               </p>
