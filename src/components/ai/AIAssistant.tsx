@@ -12,12 +12,12 @@ export default function AIAssistant({ onDescriptionGenerated, courseTitle }: AIA
 
   return (
     <div className="mt-2 relative">
-      {/* <button
+      <button
         onClick={() => setShowChat(true)}
         className="inline-flex items-center text-sm text-blue-600 hover:text-blue-800 relative z-10"
       >
         Generate AI Description
-      </button> */}  <a href='https://poweredaichat.netlify.app/'>Generate AI Description</a>
+      </button>
 
       {/* Display the loader behind the button */}
       {showChat && (
